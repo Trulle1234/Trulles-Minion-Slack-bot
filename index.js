@@ -32,7 +32,7 @@ app.command("/trulles-minion-ping", async ({ command, ack, respond }) => {
 app.command("/trulles-minion-help", async ({ command, ack, respond }) => {
     const start = Date.now();
     await ack();
-    await say({ 
+    await respond({ 
     text: 
 `Available Commands:
 /trulles-minion-ping - Check bot latency
