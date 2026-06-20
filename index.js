@@ -16,7 +16,7 @@ cron.schedule("0 0 20 * * *", async () => {
     await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: "C0945H3P2GN",
-      text: "Reminder: <@U07904YUJ6A> what did you do today and how are you today? :question_block_mario:",
+      text: "<@U07904YUJ6A> what did you do today and how are you today? :question_block_mario:",
     });
 
     console.log("daily reminder sent");
@@ -31,7 +31,7 @@ cron.schedule("0 21 * * 5", async () => {
     await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: "C0945H3P2GN",
-      text: "Reminder: <@U07904YUJ6A> It is time for your weekly update! Post it here as soon as possible or be obliterated",
+      text: "<@U07904YUJ6A> It is time for your weekly update! Post it here as soon as possible or be obliterated",
     });
 
     console.log("weekly reminder sent");
