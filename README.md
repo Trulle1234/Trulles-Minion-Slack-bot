@@ -2,9 +2,26 @@
 
 A fun little slack bot
 
+_Largley based on: https://stardance.hackclub.com/missions/slack-bot/guide_
+
 ---
 
-## Getting started
+## Features
+- Regularly scheduled reminders for my daily and weekly updates
+- Commands:
+  - /trulles-minion-help - List all commands
+  - /trulles-minion-ping - Check bot latency
+  - /trulles-weather - See my local weather
+
+---
+
+## Try it out
+
+### Are you in the Hack Club slack?
+
+**Yes:** Try it in _[#trulleathon](https://hackclub.enterprise.slack.com/archives/C0945H3P2GN)_! 
+
+**No:** Set it up on your own workspace:
 
 - First setup a slack bot
 
