@@ -10,6 +10,7 @@ const app = new App({
     socketMode: true
 });
 
+// daily update
 cron.schedule("0 0 20 * * *", async () => {
   try {
     await app.client.chat.postMessage({
@@ -24,6 +25,22 @@ cron.schedule("0 0 20 * * *", async () => {
   }
 });
 
+// weekly update
+cron.schedule("0 21 * * 5", async () => {
+  try {
+    await app.client.chat.postMessage({
+      token: process.env.SLACK_BOT_TOKEN,
+      channel: "C0945H3P2GN",
+      text: "Reminder: <@U07904YUJ6A> It is time for your weekly update! Post it here as soon as possible or be obliterated",
+    });
+
+    console.log("weekly reminder sent");
+  } catch (err) {
+    console.error("failed to send weekly reminder:", err);
+  }
+});
+
+// weather
 app.command("/trulles-weather", async ({ ack, respond }) => {
   await ack();
   try {
@@ -37,6 +54,7 @@ app.command("/trulles-weather", async ({ ack, respond }) => {
   }
 });
 
+// latency test
 app.command("/trulles-minion-ping", async ({ command, ack, respond }) => {
     const start = Date.now();
     await ack();
@@ -44,6 +62,7 @@ app.command("/trulles-minion-ping", async ({ command, ack, respond }) => {
     await respond({ text: `Pong!\nLatency: ${latency}ms` });
 });
 
+// help
 app.command("/trulles-minion-help", async ({ command, ack, respond }) => {
     const start = Date.now();
     await ack();
