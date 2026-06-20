@@ -13,7 +13,7 @@ _See here for help: https://stardance.hackclub.com/missions/slack-bot/guide#step
 - Clone the repo and install dependencies:
 
 ```bash
-https://github.com/Trulle1234/Trulles-Minion-Slack-bot trulles-minion-slack-bot
+git clone https://github.com/Trulle1234/Trulles-Minion-Slack-bot trulles-minion-slack-bot
 cd trulles-minion-slack-bot
 npm install
 ```
