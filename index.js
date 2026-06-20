@@ -10,13 +10,19 @@ const app = new App({
     socketMode: true
 });
 
-cron.schedule("0 22 43 * *", async () => {
+cron.schedule("0 0 20 * * *", async () => {
+  try {
     await app.client.chat.postMessage({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: "C0945H3P2GN",
-         text: "Reminder: <@U07904YUJ6A> what did you do today and how are you today? :question_block_mario:",
+      token: process.env.SLACK_BOT_TOKEN,
+      channel: "C0945H3P2GN",
+      text: "Reminder: <@U07904YUJ6A> what did you do today and how are you today? :question_block_mario:",
     });
-  }, { timezone: "Europe/Stockholm",});
+
+    console.log("daily reminder sent");
+  } catch (err) {
+    console.error("failed to send daily reminder:", err);
+  }
+});
 
 app.command("/trulles-weather", async ({ ack, respond }) => {
   await ack();
