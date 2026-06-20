@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { App } = require("@slack/bolt");
+const cron = require('node-cron');
 const axios = require("axios");
 
 const app = new App({
@@ -8,6 +9,14 @@ const app = new App({
     appToken: process.env.SLACK_APP_TOKEN,
     socketMode: true
 });
+
+cron.schedule("0 22 40 * *", async () => {
+    await app.client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: "C0945H3P2GN",
+         text: "Reminder: <@U07904YUJ6A> what did you do today and how are you today? :question_block_mario:",
+    });
+  }, { timezone: "Europe/Stockholm",});
 
 app.command("/trulles-weather", async ({ ack, respond }) => {
   await ack();
