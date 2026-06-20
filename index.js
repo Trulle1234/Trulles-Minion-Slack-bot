@@ -10,7 +10,7 @@ const app = new App({
     socketMode: true
 });
 
-cron.schedule("0 22 40 * *", async () => {
+cron.schedule("0 22 43 * *", async () => {
     await app.client.chat.postMessage({
         token: process.env.SLACK_BOT_TOKEN,
         channel: "C0945H3P2GN",
