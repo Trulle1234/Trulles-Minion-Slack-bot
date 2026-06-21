@@ -46,9 +46,6 @@ app.event("member_joined_channel", async ({ event, client, say }) => {
         const TARGET_CHANNEL = "C0945H3P2GN";
 
         if (event.channel === TARGET_CHANNEL) {
-            const authInfo = await client.auth.test();
-            const botUserId = authInfo.user_id;
-
             await app.client.chat.postMessage({
                 token: process.env.SLACK_BOT_TOKEN,
                 channel: TARGET_CHANNEL,
