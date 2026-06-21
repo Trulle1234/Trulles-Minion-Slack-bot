@@ -64,7 +64,7 @@ app.event("app_mention", async ({ event, client, say }) => {
             text: "_writing some wise words_ :loading:"
         });
 
-        const wordAmount = Math.floor(Math.random() * 6);
+        const wordAmount = Math.ceil(Math.random() * 5);
         const response = await axios.get(
             `https://random-word-api.herokuapp.com/word?number=${wordAmount}&diff=1`
         );
