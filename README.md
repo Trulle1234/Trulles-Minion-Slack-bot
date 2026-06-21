@@ -8,10 +8,12 @@ _Largley based on: https://stardance.hackclub.com/missions/slack-bot/guide_
 
 ## Features
 - Regularly scheduled reminders for my daily and weekly updates
+- Answers with random words on ping (meant to be like a stupid AI that just responds with gibberish)
 - Commands:
   - /trulles-minion-help - List all commands
   - /trulles-minion-ping - Check bot latency
   - /trulles-weather - See my local weather
+  - /enter-trulles-basement - Get the link to join my priv channel
 
 ---
 
