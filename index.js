@@ -57,6 +57,39 @@ app.event("member_joined_channel", async ({ event, client, say }) => {
     }
 });
 
+// answer when pinged
+app.event("app_mention", async ({ event, client, say }) => {
+    try {
+        const loadingMessage = await say({
+            text: "_writing some wise words_ :loading:"
+        });
+
+        const wordAmount = Math.floor(Math.random() * 6);
+        const response = await axios.get(
+            `https://random-word-api.herokuapp.com/word?number=${wordAmount}&diff=1`
+        );
+        let responseText = "";
+
+        for (let i = 0; i < response.data.length; i++) {
+            responseText += response.data[i] + " "
+        }
+
+        await client.chat.delete({
+            channel: event.channel,
+            ts: loadingMessage.ts
+        });
+
+        await say({
+            text: responseText
+        });
+
+    } catch (err) {
+        console.error(err);
+        await say({
+            text: "Failed to fetch response"
+        });
+    }
+});
 
 // weather
 app.command("/trulles-weather", async ({ command, ack, respond }) => {
