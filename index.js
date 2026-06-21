@@ -59,8 +59,10 @@ app.event("member_joined_channel", async ({ event, client, say }) => {
 
 // answer when pinged
 app.event("app_mention", async ({ event, client, say }) => {
+    let loadingMessage;
+
     try {
-        const loadingMessage = await say({
+        loadingMessage = await say({
             text: "_writing some wise words_ :loading:"
         });
 
@@ -71,28 +73,33 @@ app.event("app_mention", async ({ event, client, say }) => {
         let responseText = "";
 
         for (let i = 0; i < response.data.length; i++) {
-            responseText += response.data[i] + " "
+            responseText += response.data[i] + " ";
         }
 
-        await client.chat.delete({
-            channel: event.channel,
-            ts: loadingMessage.ts
-        });
+        if (loadingMessage && loadingMessage.ts) {
+            await client.chat.delete({
+                channel: event.channel,
+                ts: loadingMessage.ts
+            });
+        }
 
         await say({
-            text: responseText
+            text: responseText.trim()
         });
-
     } catch (err) {
         console.error(err);
 
-        await client.chat.delete({
-            channel: event.channel,
-            ts: loadingMessage.ts
-        });
+        if (loadingMessage && loadingMessage.ts) {
+            await client.chat.delete({
+                channel: event.channel,
+                ts: loadingMessage.ts
+            }).catch(deleteErr => {
+                console.error("failed to delete loading message:", deleteErr);
+            });
+        }
 
         await say({
-            text: "my api down :v:"
+            text: "the api down :v:"
         });
     }
 });
