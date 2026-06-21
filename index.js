@@ -85,8 +85,14 @@ app.event("app_mention", async ({ event, client, say }) => {
 
     } catch (err) {
         console.error(err);
+
+        await client.chat.delete({
+            channel: event.channel,
+            ts: loadingMessage.ts
+        });
+
         await say({
-            text: "Failed to fetch response"
+            text: "my api down :v:"
         });
     }
 });
