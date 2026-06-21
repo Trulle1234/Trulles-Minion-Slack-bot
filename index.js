@@ -59,7 +59,7 @@ app.event("member_joined_channel", async ({ event, client, say }) => {
 
 
 // weather
-app.command("/trulles-weather", async ({ ack, respond }) => {
+app.command("/trulles-weather", async ({ command, ack, respond }) => {
     await ack();
 
     try {
@@ -76,6 +76,15 @@ app.command("/trulles-weather", async ({ ack, respond }) => {
         console.error(err);
         await respond({ text: "Failed to fetch a weather." });
     }
+});
+
+// join priv channel
+app.command("/enter-trulles-basement", async ({ commandm, ack, respond }) => {
+    await ack();
+
+    await respond({
+        text: "Enter trulles basement:\nhttps://hackclub.enterprise.slack.com/archives/D0ASFBG7R5Y"
+    });
 });
 
 // latency test
