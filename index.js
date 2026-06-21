@@ -142,6 +142,7 @@ app.command("/trulles-minion-help", async ({ command, ack, respond }) => {
 `Available Commands:
 /trulles-minion-ping - Check bot latency
 /trulles-weather - See Trulles local weather 
+/enter-trulles-basement - Get the link to join Trulles priv channel
 `
     });
 });
