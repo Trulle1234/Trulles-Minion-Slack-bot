@@ -80,12 +80,13 @@ app.event("app_mention", async ({ event, client, say }) => {
 `you will receive 2 to 5 random words
 your task is to rearrange the words so they sound more like a simple sentence or phrase
 
-rules: 
+rules:
 - use only lowercase letters
 - do not add punctuation
 - do not add extra characters
 - do not add extra words unless absolutely necessary
 - keep the original words when possible
+- you may change word forms, such as tense, singular/plural, or grammar, if it makes the sentence sound more natural
 - you may replace a word with a more common synonym if it makes the sentence sound more natural
 - return only the final sentence or phrase`;
 
