@@ -25,8 +25,8 @@ cron.schedule("0 0 20 * * *", async () => {
     }
 });
 
-// weekly update
-cron.schedule("0 21 * * 5", async () => {
+// weekly update (every Friday at 21:00)
+cron.schedule("0 0 21 * * 5", async () => {
     try {
         await app.client.chat.postMessage({
             token: process.env.SLACK_BOT_TOKEN,
@@ -56,7 +56,7 @@ app.event("member_joined_channel", async ({ event, client, say }) => {
         console.error(err);
     }
 });
-
+  
 // answer when pinged
 app.event("app_mention", async ({ event, client, say }) => {
     let loadingMessage;
@@ -67,15 +67,56 @@ app.event("app_mention", async ({ event, client, say }) => {
         });
 
         const wordAmount = Math.ceil(Math.random() * 5);
-        const response = await axios.get(
+        const wordResponse = await axios.get(
             `https://random-word-api.herokuapp.com/word?number=${wordAmount}&diff=1`
         );
         let responseText = "";
 
-        for (let i = 0; i < response.data.length; i++) {
-            responseText += response.data[i] + " ";
+        for (let i = 0; i < wordResponse.data.length; i++) {
+            responseText += wordResponse.data[i] + " ";
         }
 
+        const aiPrompt =
+`you will receive 2 to 5 random words
+your task is to rearrange the words so they sound more like a simple sentence or phrase
+
+rules: 
+- use only lowercase letters
+- do not add punctuation
+- do not add extra characters
+- do not add extra words unless absolutely necessary
+- keep the original words when possible
+- you may replace a word with a more common synonym if it makes the sentence sound more natural
+- return only the final sentence or phrase`;
+
+        let aiResponse = null;
+        let aiSucceeded = false;
+
+        try {
+            aiResponse = await axios.post(
+                "https://ai.hackclub.com/proxy/v1/chat/completions",
+                {
+                    model: "google/gemini-2.5-flash-lite-preview-09-2025",
+                    messages: [{ role: "system", content: aiPrompt }, { role: "user", responseText }]
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${process.env.HC_AI_API_KEY}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            aiSucceeded = true;
+
+        } catch (aiErr) {
+            if (aiErr && aiErr.isAxiosError && aiErr.response) {
+                console.error("AI request failed (skipping):", aiErr.response.status, JSON.stringify(aiErr.response.data, null, 2));
+            } else {
+                console.error("AI request error (skipping):", aiErr);
+            }
+        }
+        
         if (loadingMessage && loadingMessage.ts) {
             await client.chat.delete({
                 channel: event.channel,
@@ -83,9 +124,14 @@ app.event("app_mention", async ({ event, client, say }) => {
             });
         }
 
-        await say({
-            text: responseText.trim()
-        });
+        if (aiSucceeded) {
+            const aiText = (aiResponse && aiResponse.data && aiResponse.data.choices && aiResponse.data.choices[0] && aiResponse.data.choices[0].message && aiResponse.data.choices[0].message.content) || null;
+
+            await say({ text: aiText ? aiText : responseText.trim() });
+        } else {
+            await say({ text: responseText.trim() });
+        }
+        
     } catch (err) {
         console.error(err);
 
@@ -125,7 +171,7 @@ app.command("/trulles-weather", async ({ command, ack, respond }) => {
 });
 
 // join priv channel
-app.command("/enter-trulles-basement", async ({ commandm, ack, respond }) => {
+app.command("/enter-trulles-basement", async ({ command, ack, respond }) => {
     await ack();
 
     await respond({
